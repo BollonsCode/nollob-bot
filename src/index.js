@@ -1,8 +1,9 @@
 const discordJs = require("discord.js");
+const TOKEN = require("./config/token");
 
 const bot = new discordJs.Client();
 
-bot.login("NzM2NjU3NjgxNjY1NzUzMjEw.Xxx_7Q.LsYG8P6q_EQBWw_Pl2CfPHewruM");
+bot.login(TOKEN);
 
 bot.on("ready", () => {
   console.log("estou online no Discord!");
