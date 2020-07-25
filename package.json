@@ -1,0 +1,19 @@
+{
+  "name": "nollob",
+  "version": "0.0.1",
+  "description": "Bot para salvar datas de aniversario com mensagens personalizadas",
+  "main": "./src/index.js",
+  "repository": "https://github.com/BollonzeraCode/nollob-bot",
+  "author": "@vgeruso",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon .",
+    "start": "node ."
+  },
+  "dependencies": {
+    "discord.js": "^12.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
