@@ -40,6 +40,9 @@ bot.on("message", (msg) => {
       })
       .catch(console.error);
   }
+  if (msg.content === `${prefix}nv-data`) {
+    msg.reply(msg.content);
+  }
   if (msg.content === `${prefix}ping`) {
     // let res = ping.sys.probe("google.com", {
     //   timeout: 10,
