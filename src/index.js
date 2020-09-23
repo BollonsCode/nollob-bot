@@ -1,6 +1,8 @@
-// const ping = require("ping");
 const DiscordJs = require("discord.js");
 const conf = require("./config/token");
+const { default: fetch } = require("node-fetch");
+
+const month = require("./month");
 
 const bot = new DiscordJs.Client();
 const hook = new DiscordJs.WebhookClient(conf.ID_WH, conf.TOKEN_WH);
@@ -8,6 +10,7 @@ const hook = new DiscordJs.WebhookClient(conf.ID_WH, conf.TOKEN_WH);
 bot.login(conf.TOKEN_GERAL);
 
 const prefix = "$";
+const HOST = "http://localhost:3333/api";
 
 bot.on("ready", () => {
   console.log("estou online no Discord!");
@@ -40,8 +43,16 @@ bot.on("message", (msg) => {
       })
       .catch(console.error);
   }
-  if (msg.content === `${prefix}nv-data`) {
-    msg.reply(msg.content);
+  if (msg.content.substring(0, 8) === `${prefix}nv-data`) {
+    console.log(msg.content.substring(9));
+    const data = msg.content.substring(9);
+    data.substring(6);
+    const body = {
+      userName: msg.author.username,
+      day: Number(data.substring(0, 2)),
+    };
+    // fetch(`${HOST}/users`, { method: "POST", body });
+    msg.reply(body);
   }
   if (msg.content === `${prefix}ping`) {
     // let res = ping.sys.probe("google.com", {
@@ -49,5 +60,10 @@ bot.on("message", (msg) => {
     //   extra: ["-i", "2"],
     // });
     // msg.channel.send(`Pong, ${res} ms!`);
+  }
+  if (msg.content === `${prefix}test`) {
+    fetch(HOST)
+      .then((res) => res.json())
+      .then((json) => msg.reply(json.msg));
   }
 });
