@@ -1,8 +1,6 @@
 const DiscordJs = require("discord.js");
 const conf = require("./config/token");
-const { default: fetch } = require("node-fetch");
-
-const month = require("./month");
+const comandos = require("./app/comandos");
 
 const bot = new DiscordJs.Client();
 const hook = new DiscordJs.WebhookClient(conf.ID_WH, conf.TOKEN_WH);
@@ -10,17 +8,19 @@ const hook = new DiscordJs.WebhookClient(conf.ID_WH, conf.TOKEN_WH);
 bot.login(conf.TOKEN_GERAL);
 
 const prefix = "$";
-const HOST = "http://localhost:3333/api";
 
 bot.on("ready", () => {
   console.log("estou online no Discord!");
 });
 
 bot.on("message", (msg) => {
-  if (msg.content === `${prefix}hello`) {
+  const conteudo = msg.content.split(" ");
+
+  if (conteudo[0] === `${prefix}hello`) {
     msg.reply("Olá, seja bem vindo ao nosso server!");
   }
-  if (msg.content === `${prefix}help`) {
+
+  if (conteudo[0] === `${prefix}help`) {
     hook
       .sendSlackMessage({
         username: "Wumpus",
@@ -43,25 +43,21 @@ bot.on("message", (msg) => {
       })
       .catch(console.error);
   }
-  if (msg.content.substring(0, 8) === `${prefix}nv-data`) {
-    console.log(msg.content.substring(9));
-    const data = msg.content.substring(9);
-    data.substring(6);
-    const body = {
-      userName: msg.author.username,
-      day: Number(data.substring(0, 2)),
-    };
-    // fetch(`${HOST}/users`, { method: "POST", body });
-    msg.reply(body);
+
+  if (conteudo[0] === `${prefix}nv-data`) {
+    // TODO Ajustar retorno com um tipo de sistema de rotas
+    msg.reply(comandos.nvData(conteudo, msg.author.username));
   }
-  if (msg.content === `${prefix}ping`) {
+
+  if (conteudo[0] === `${prefix}ping`) {
     // let res = ping.sys.probe("google.com", {
     //   timeout: 10,
     //   extra: ["-i", "2"],
     // });
     // msg.channel.send(`Pong, ${res} ms!`);
   }
-  if (msg.content === `${prefix}test`) {
+
+  if (conteudo[0] === `${prefix}test`) {
     fetch(HOST)
       .then((res) => res.json())
       .then((json) => msg.reply(json.msg));
