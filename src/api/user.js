@@ -12,14 +12,48 @@ module.exports = {
         return res.data;
       })
       .catch((err) => {
-        console.log(err);
+        return err.response.data;
       });
 
-    console.log(resApi);
     if (resApi.created) {
       return "Que top! sua data de aniversário está salva";
     }
 
-    return "Ops, tive um probleminha para salvar sua data, verifica o que tu escreveu por favor?";
+    return "Eu já sei seu aniverio carinha";
+  },
+
+  async findUsersCurrentMonth() {
+    const resApi = await api
+      .get("/users/month")
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        return err.response.data;
+      });
+
+    if (resApi.found) {
+      return resApi.users;
+    }
+
+    return [];
+  },
+
+  async findUsersByMonth(month) {
+    const resApi = await api
+      .get(`/users/month/${month}`)
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        return err.response.data;
+      });
+
+    console.log(resApi);
+    if (resApi.found) {
+      return resApi.users;
+    }
+
+    return [];
   },
 };

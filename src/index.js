@@ -9,11 +9,13 @@ bot.login(conf.TOKEN_GERAL);
 
 const prefix = "$";
 
+// TODO Criar um feature para deletar o usuário do banco
+// TODO Criar a feature para parabenisar automaticamente o aniversariante às 00:00 do dia do aniversário
 bot.on("ready", () => {
   console.log("estou online no Discord!");
 });
 
-bot.on("message", (msg) => {
+bot.on("message", async (msg) => {
   const conteudo = msg.content.split(" ");
 
   if (conteudo[0] === `${prefix}hello`) {
@@ -23,7 +25,7 @@ bot.on("message", (msg) => {
   if (conteudo[0] === `${prefix}help`) {
     hook
       .sendSlackMessage({
-        username: "Wumpus",
+        username: "Nollob",
         attachments: [
           {
             pretext:
@@ -45,21 +47,57 @@ bot.on("message", (msg) => {
   }
 
   if (conteudo[0] === `${prefix}nv-data`) {
-    // TODO Ajustar retorno com um tipo de sistema de rotas
-    msg.reply(comandos.nvData(conteudo, msg.author.username));
+    const resp = await comandos.nvData(conteudo, msg.author.username);
+    msg.reply(resp);
+  }
+
+  if (conteudo[0] === `${prefix}ls-nv-mes`) {
+    if (conteudo[1]) {
+      const resp = await comandos.lsNvMes(conteudo[1]);
+      if (resp.length > 0) {
+        let pretext = "";
+        resp.map((user) => {
+          pretext += user.userName + ": " + user.strDate + "\n\n";
+        });
+
+        hook.sendSlackMessage({
+          username: "Nollob",
+          attachments: [
+            {
+              pretext,
+              color: "#007cdc",
+              ts: Date.now() / 1000,
+            },
+          ],
+        });
+      } else {
+        msg.reply("Não existem usuario aniversariando neste mês");
+      }
+    } else {
+      const resp = await comandos.lsNvMesAtual();
+      if (resp.length > 0) {
+        let pretext = "";
+        resp.map((user) => {
+          pretext += user.userName + ": " + user.strDate + "\n\n";
+        });
+
+        hook.sendSlackMessage({
+          username: "Nollob",
+          attachments: [
+            {
+              pretext,
+              color: "#007cdc",
+              ts: Date.now() / 1000,
+            },
+          ],
+        });
+      } else {
+        msg.reply("Não existem usuario aniversariando este mês");
+      }
+    }
   }
 
   if (conteudo[0] === `${prefix}ping`) {
-    // let res = ping.sys.probe("google.com", {
-    //   timeout: 10,
-    //   extra: ["-i", "2"],
-    // });
-    // msg.channel.send(`Pong, ${res} ms!`);
-  }
-
-  if (conteudo[0] === `${prefix}test`) {
-    fetch(HOST)
-      .then((res) => res.json())
-      .then((json) => msg.reply(json.msg));
+    msg.reply("Pong, seu ping ta OK");
   }
 });

@@ -15,4 +15,16 @@ module.exports = {
 
     return resp;
   },
+
+  async lsNvMesAtual() {
+    const resp = await user.findUsersCurrentMonth();
+
+    return resp;
+  },
+
+  async lsNvMes(month) {
+    const resp = await user.findUsersByMonth(month);
+
+    return resp;
+  },
 };
