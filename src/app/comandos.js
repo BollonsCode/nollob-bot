@@ -32,7 +32,7 @@ module.exports = {
     const resp = await user.deleteUser(userName);
 
     if (resp) {
-      return "Niver apagado de minha cachola...";
+      return "Niver apagado de minha caixola...";
     }
 
     return "Ocorreu um erro ao apagar o seu niver...";

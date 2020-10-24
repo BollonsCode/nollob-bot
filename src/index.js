@@ -37,7 +37,8 @@ bot.on("message", async (msg) => {
               "\nExemplo: `$nv-data` 1 de maio" +
               "\n\n`$ls-nv-mes` 'mes desejado' -> listo todos os aniversariantes do mês desejado ou do mes atual" +
               "\nExemplo mes desejado: `$ls-nv-mes` 1" +
-              "\nExemplo mes atual: `$ls-nv-mes`",
+              "\nExemplo mes atual: `$ls-nv-mes`" +
+              "\n\n`$del-nv-data` -> deleto seu aniversaro de minha caixola",
             color: "#007cdc",
             ts: Date.now() / 1000,
           },

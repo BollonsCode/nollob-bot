@@ -16,7 +16,7 @@ module.exports = {
       });
 
     if (resApi.created) {
-      return "Que top! sua data de aniversário está salva";
+      return "Que top! sua data de aniversário está salvo";
     }
 
     return "Eu já sei seu aniverio carinha";
