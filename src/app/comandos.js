@@ -27,4 +27,14 @@ module.exports = {
 
     return resp;
   },
+
+  async delNvData(userName) {
+    const resp = await user.deleteUser(userName);
+
+    if (resp) {
+      return "Niver apagado de minha cachola...";
+    }
+
+    return "Ocorreu um erro ao apagar o seu niver...";
+  },
 };

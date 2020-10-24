@@ -1,6 +1,7 @@
 const DiscordJs = require("discord.js");
 const conf = require("./config/token");
 const comandos = require("./app/comandos");
+const user = require("./api/user");
 
 const bot = new DiscordJs.Client();
 const hook = new DiscordJs.WebhookClient(conf.ID_WH, conf.TOKEN_WH);
@@ -9,8 +10,7 @@ bot.login(conf.TOKEN_GERAL);
 
 const prefix = "$";
 
-// TODO Criar um feature para deletar o usuário do banco
-// TODO Criar a feature para parabenisar automaticamente o aniversariante às 00:00 do dia do aniversário
+// TODO Criar a feature para parabenizar automaticamente o aniversariante às 00:00 do dia do aniversário
 bot.on("ready", () => {
   console.log("estou online no Discord!");
 });
@@ -47,7 +47,9 @@ bot.on("message", async (msg) => {
   }
 
   if (conteudo[0] === `${prefix}nv-data`) {
-    const resp = await comandos.nvData(conteudo, msg.author.username);
+    const usersplit = msg.author.tag.split("#");
+    const userName = usersplit[0] + usersplit[1];
+    const resp = await comandos.nvData(conteudo, userName);
     msg.reply(resp);
   }
 
@@ -71,7 +73,7 @@ bot.on("message", async (msg) => {
           ],
         });
       } else {
-        msg.reply("Não existem usuario aniversariando neste mês");
+        msg.reply("Não existem usuarios aniversariando neste mês");
       }
     } else {
       const resp = await comandos.lsNvMesAtual();
@@ -92,9 +94,17 @@ bot.on("message", async (msg) => {
           ],
         });
       } else {
-        msg.reply("Não existem usuario aniversariando este mês");
+        msg.reply("Não existem usuarios aniversariando este mês");
       }
     }
+  }
+
+  if (conteudo[0] === `${prefix}del-nv-data`) {
+    const usersplit = msg.author.tag.split("#");
+    const userName = usersplit[0] + usersplit[1];
+    const resp = await comandos.delNvData(userName);
+
+    msg.reply(resp);
   }
 
   if (conteudo[0] === `${prefix}ping`) {
