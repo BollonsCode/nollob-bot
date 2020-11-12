@@ -56,6 +56,20 @@ module.exports = {
     return [];
   },
 
+  async findUserByDayAndMonth(day, month) {
+    const resApi = await api.get(`/users/day/${day}/month/${month}`).then((res) => {
+      return res.data;
+    }).catch((err) => {
+      return err.response.data;
+    });
+
+    if(resApi.found) {
+      return resApi.users;
+    }
+
+    return [];
+  },
+
   async deleteUser(userName) {
     const resApi = await api
       .delete(`/users/${userName}`)

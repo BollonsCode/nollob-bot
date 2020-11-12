@@ -28,6 +28,12 @@ module.exports = {
     return resp;
   },
 
+  async getUserNv(day, month) {
+    const resp = await user.findUserByDayAndMonth(day, month);
+
+    return resp;
+  },
+
   async delNvData(userName) {
     const resp = await user.deleteUser(userName);
 

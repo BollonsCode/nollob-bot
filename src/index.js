@@ -1,4 +1,6 @@
 const DiscordJs = require("discord.js");
+const cron = require("node-cron");
+
 const conf = require("./config/token");
 const comandos = require("./app/comandos");
 const user = require("./api/user");
@@ -10,9 +12,22 @@ bot.login(conf.TOKEN_GERAL);
 
 const prefix = "$";
 
-// TODO Criar a feature para parabenizar automaticamente o aniversariante às 00:00 do dia do aniversário
+// TODO Ajustar melhorias al aguns comando e a API
 bot.on("ready", () => {
   console.log("estou online no Discord!");
+  cron.schedule("0 0 * * *", async () => {
+    const date = new Date();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    
+    const usersNv = await comandos.getUserNv(day, month);
+
+    usersNv.map((user) => {
+      const len = user.userName.length;
+      const name = user.userName.substr(0, len-4);
+      hook.send(`@${name} , Meus parabens! muitos anos de saúde e paz na sua vida! seja feliz!`);
+    })
+  });
 });
 
 bot.on("message", async (msg) => {
